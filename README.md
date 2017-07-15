@@ -160,6 +160,7 @@ Follow the instructions [here](https://stlong0521.github.io/20161023%20-%20Airfl
 
 Follow the instructions [here](https://stlong0521.github.io/20161023%20-%20Airflow.html)
 
+
 ## 2. Run RabbitMQ
 
 ### Start RabbitMQ
@@ -167,9 +168,9 @@ Follow the instructions [here](https://stlong0521.github.io/20161023%20-%20Airfl
 1. Start the RabbitMQ in a Docker container
 
     ```
-    export RMQ=rabbitmq:3.6.10-management
+    export RMQ_IMG=rabbitmq:3.6.10-management
     docker run -d --rm --hostname airflow-rmq \
-        --name airflow-rmq -p 192.168.33.10:15672:15672 -p 5672:5672 $RMQ
+        --name airflow-rmq -p 192.168.33.10:15672:15672 -p 5672:5672 $RMQ_IMG
     ```
 
 2. Display the list of running Docker instances
@@ -182,33 +183,24 @@ Follow the instructions [here](https://stlong0521.github.io/20161023%20-%20Airfl
 
 3. Login using guest/guest
 
-### Control RabbitMQ
+### Stop RabbitMQ
 
 1. Connect to the RabbitMQ Docker container
 
     ```
     export RMQ=$(docker ps -aq --filter name=airflow-rmq)
-    docker exec -ti $RMQ bash
     ```
 
 2. List queues
 
     ```
-    rabbitmqctl list_queues
+    docker exec -ti $RMQ rabbitmqctl list_queues
     ```
 
-### Stop RabbitMQ
-
-1. List the Docker container
+3. Stop RabbitMQ
 
     ```
-    docker ps -aq --filter name=airflow-rmq
-    ```
-
-2. Stop RabbitMQ
-
-    ```
-    docker stop $(!!)
+    docker stop $RMQ
     ```
 
 ## 3. Connect to RabbitMQ using Python
@@ -278,16 +270,16 @@ The RabbitMQ web site demonstrates how to connect using Python and the
     python -c "from tasks import add; add.delay(2, 3)"
     ```
 
-## Run Postgres
+## 4. Run Postgres
 
 ### Start Postgres
 
-1. Start the RabbitMQ in the Docker container with the name
+1. Start the Postgres in the Docker container with the name
 
     ```
-    export RMQ=rabbitmq:3.6.10-management
-    docker run -d --rm --hostname airflow-rmq \
-        --name airflow-rmq -p 192.168.33.10:15672:15672 -p 5672:5672 $RMQ
+    export PG_IMG=postgres:9.6.3
+    docker run -d --rm --name airflow-pg \
+        -e POSTGRES_PASSWORD=airflow_pg_pass $PG_IMG
     ```
 
 2. Display the list of running Docker instances
@@ -296,41 +288,22 @@ The RabbitMQ web site demonstrates how to connect using Python and the
     docker ps
     ```
 
-2. Go to the RabbitMQ dashboard at http://192.168.33.10:15672/
-
-3. Login using guest/guest
-
-### Control RabbitMQ
-
-1. Connect to the RabbitMQ Docker container
-
-    ```
-    export RMQ=$(docker ps -aq --filter name=airflow-rmq)
-    docker exec -ti $RMQ bash
-    ```
-
-2. List queues
-
-    ```
-    rabbitmqctl list_queues
-    ```
-
-### Stop RabbitMQ
+### Stop Postgres
 
 4. List the Docker container
 
     ```
-    docker ps -aq --filter name=airflow-rmq
+    docker ps -aq --filter name=airflow-pg
     ```
 
-5. Stop RabbitMQ
+5. Stop Postgres
 
     ```
     docker stop $(!!)
 
     ```
 
-## Connect to Postgres using Psycopg2 and SQLAlchemy
+## 5. Connect to Postgres using Psycopg2 and SQLAlchemy
 
 ### Connect to Postgres only using Psycopg2
 
