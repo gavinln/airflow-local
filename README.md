@@ -36,6 +36,8 @@ the VM is started.
 
 ## Initialize Airflow
 
+This process will setup Airflow in Standalone mode using Sequential Executor
+
 1. Setup the home directory
 
     ```
@@ -148,6 +150,14 @@ the VM is started.
     airflow scheduler
     ```
 
+## Setup Airflow in Pseudo-distributed mode using Local Executor
+
+Follow the instructions [here](https://stlong0521.github.io/20161023%20-%20Airflow.html)
+
+## Setup Airflow in distributed mode using Celery Executor
+
+Follow the instructions [here](https://stlong0521.github.io/20161023%20-%20Airflow.html)
+
 ## Run RabbitMQ
 
 1. Start the RabbitMQ in the Docker container with the name
@@ -169,6 +179,17 @@ docker stop $(!!)
 
 6. Remote the RabbitMQ container
 docker rm $(!!)
+
+## Connect to RabbitMQ using Python
+
+https://www.rabbitmq.com/tutorials/tutorial-one-python.html
+
+## Connect to Postgres using Psycopg2 and SQLAlchemy
+
+1. Test connection using Psycopg2
+http://initd.org/psycopg/docs/usage.html
+
+2. Test connection using SQLAlchemy
 
 ## Documentation
 
