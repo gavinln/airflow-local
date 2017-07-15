@@ -21,4 +21,5 @@
     - include: python_setup.yml
     - include: docker_setup.yml
     - include: docker-image-setup.yml
+    - include: celery-setup.yml
     - include: airflow-setup.yml

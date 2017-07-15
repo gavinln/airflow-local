@@ -1,5 +1,5 @@
 ---
- - name: Add ubuntu user to docker group.
+ - name: Add ubuntu user to docker group
    user:
      name: ubuntu
      groups: docker

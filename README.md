@@ -160,16 +160,33 @@ Follow the instructions [here](https://stlong0521.github.io/20161023%20-%20Airfl
 
 ## Run RabbitMQ
 
+### Start RabbitMQ
+
 1. Start the RabbitMQ in the Docker container with the name
 
 ```
 export RMQ=rabbitmq:3.6.10-management
-docker run -d --hostname airflow-rmq --name airflow-rmq -p 192.168.33.10:15672:15672 $RMQ
+docker run -d --rm --hostname airflow-rmq \
+    --name airflow-rmq -p 192.168.33.10:15672:15672 -p 5672:5672 $RMQ
 ```
+
+2. Display the list of running Docker instances
+docker ps
 
 2. Go to the RabbitMQ dashboard at http://192.168.33.10:15672/
 
 3. Login using guest/guest
+
+### Control RabbitMQ
+
+1. Connect to the RabbitMQ Docker container
+export RMQ=$(docker ps -aq --filter name=airflow-rmq)
+docker exec -ti $RMQ bash
+
+2. List queues
+rabbitmqctl list_queues
+
+### Stop RabbitMQ
 
 4. List the Docker container
 docker ps -aq --filter name=airflow-rmq
@@ -177,12 +194,35 @@ docker ps -aq --filter name=airflow-rmq
 5. Stop RabbitMQ
 docker stop $(!!)
 
-6. Remote the RabbitMQ container
-docker rm $(!!)
-
 ## Connect to RabbitMQ using Python
 
-https://www.rabbitmq.com/tutorials/tutorial-one-python.html
+### Connect only using Python (no Celery)
+
+The RabbitMQ web site demonstrates how to connect using Python and the
+[Pika][100] library.
+
+[100]: https://www.rabbitmq.com/tutorials/tutorial-one-python.html
+
+1. List queues
+docker exec -ti $RMQ rabbitmqctl list_queues
+
+2. Send a message to a RabbitMQ queue called hello
+python rmq-send.py
+
+3. Receive a message from RabbitMQ queue called hello
+python rmq-receive.py
+
+4. List queues displaying the hello queue
+docker exec -ti $RMQ rabbitmqctl list_queues
+
+5. Stop the app
+docker exec -ti $RMQ rabbitmqctl stop_app
+
+6. Start the app
+docker exec -ti $RMQ rabbitmqctl start_app
+
+7. List queues and the hello queue is not displayed
+docker exec -ti $RMQ rabbitmqctl list_queues
 
 ## Connect to Postgres using Psycopg2 and SQLAlchemy
 
