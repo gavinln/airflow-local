@@ -7,16 +7,18 @@
 
 ## About
 
-This project provides a [Ubuntu (14.04)][20] [Vagrant][30] Virtual Machine (VM) with [Airflow][40], a data workflow management system from [Airbnb][50].
+This project provides a [Ubuntu (16.04)][20] [Vagrant][30] Virtual Machine
+(VM) with [Airflow][40], a data workflow management system from [Airbnb][50].
 
 [20]: http://releases.ubuntu.com/14.04/
 [30]: http://www.vagrantup.com/
 [40]: https://github.com/airbnb/airflow
 [50]: http://nerds.airbnb.com/airflow/
 
-There are [Puppet][60] scripts that automatically install the software when the VM is started.
+There are [Ansible][60] scripts that automatically install the software when
+the VM is started.
 
-[60]: http://puppetlabs.com/
+[60]: https://www.ansible.com/
 
 ## Connect to the VM
 
