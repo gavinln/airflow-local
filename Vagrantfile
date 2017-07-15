@@ -12,12 +12,12 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/xenial64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
-  config.vm.box_check_update = false
+  config.vm.box_check_update = true
 
   # use insecure key
   # config.ssh.insert_key = false
@@ -95,7 +95,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "airflow-local", autostart: true do |machine|
     machine.vm.provider "virtualbox" do |vb|
       # vb.gui = true
-      vb.memory = "2048"
+      vb.memory = "4096"
       vb.cpus = "1"
 
       if Vagrant::Util::Platform.windows? then
@@ -108,9 +108,12 @@ Vagrant.configure(2) do |config|
     machine.vm.hostname = "airflow-local"
     machine.vm.network "private_network", ip: "192.168.33.10"
 
-    machine.vm.provision "shell" do |sh|
-      sh.path = "ansible/ansible_install.sh"
-      sh.args = "ansible/playbook.yml"
+    machine.vm.provision "ansible_local" do |ansible|
+      ansible.install_mode = "pip"
+      ansible.version = "2.2.3.0"
+      ansible.provisioning_path = "/vagrant/ansible"
+      ansible.galaxy_role_file = "requirements.yml"
+      ansible.playbook = "playbook.yml"
     end
   end
 end
