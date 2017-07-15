@@ -20,7 +20,9 @@ the VM is started.
 
 [60]: https://www.ansible.com/
 
-## Connect to the VM
+## 1. Run Airflow
+
+### Connect to the VM
 
 1. To start the virtual machine(VM) type
 
@@ -34,7 +36,7 @@ the VM is started.
     vagrant ssh
     ```
 
-## Initialize Airflow
+### Initialize Airflow
 
 This process will setup Airflow in Standalone mode using Sequential Executor
 
@@ -58,7 +60,7 @@ This process will setup Airflow in Standalone mode using Sequential Executor
 
 4. Open a web browser to the UI at http://192.168.33.10:8080
 
-## Run a task
+### Run a task
 
 1. List DAGS
 
@@ -97,7 +99,7 @@ This process will setup Airflow in Standalone mode using Sequential Executor
     airflow clear example_bash_operator
     ```
 
-## Add a new task
+### Add a new task
 
 1. Go to the Airflow config directory
 
@@ -117,7 +119,7 @@ This process will setup Airflow in Standalone mode using Sequential Executor
     airflow webserver -p 8080
     ```
 
-## Disable logging
+### Disable logging
 
 1. Change to the airflow directory
 
@@ -133,7 +135,7 @@ This process will setup Airflow in Standalone mode using Sequential Executor
 
 3. Run airflow without any logging messages
 
-## Setup airflow dags directory
+### Setup airflow dags directory
 
 1. Edit file ~/airflow/airflow.cfg
 
@@ -150,28 +152,31 @@ This process will setup Airflow in Standalone mode using Sequential Executor
     airflow scheduler
     ```
 
-## Setup Airflow in Pseudo-distributed mode using Local Executor
+### Setup Airflow in Pseudo-distributed mode using Local Executor
 
 Follow the instructions [here](https://stlong0521.github.io/20161023%20-%20Airflow.html)
 
-## Setup Airflow in distributed mode using Celery Executor
+### Setup Airflow in distributed mode using Celery Executor
 
 Follow the instructions [here](https://stlong0521.github.io/20161023%20-%20Airflow.html)
 
-## Run RabbitMQ
+## 2. Run RabbitMQ
 
 ### Start RabbitMQ
 
-1. Start the RabbitMQ in the Docker container with the name
+1. Start the RabbitMQ in a Docker container
 
-```
-export RMQ=rabbitmq:3.6.10-management
-docker run -d --rm --hostname airflow-rmq \
-    --name airflow-rmq -p 192.168.33.10:15672:15672 -p 5672:5672 $RMQ
-```
+    ```
+    export RMQ=rabbitmq:3.6.10-management
+    docker run -d --rm --hostname airflow-rmq \
+        --name airflow-rmq -p 192.168.33.10:15672:15672 -p 5672:5672 $RMQ
+    ```
 
 2. Display the list of running Docker instances
-docker ps
+
+    ```
+    docker ps
+    ```
 
 2. Go to the RabbitMQ dashboard at http://192.168.33.10:15672/
 
@@ -180,21 +185,33 @@ docker ps
 ### Control RabbitMQ
 
 1. Connect to the RabbitMQ Docker container
-export RMQ=$(docker ps -aq --filter name=airflow-rmq)
-docker exec -ti $RMQ bash
+
+    ```
+    export RMQ=$(docker ps -aq --filter name=airflow-rmq)
+    docker exec -ti $RMQ bash
+    ```
 
 2. List queues
-rabbitmqctl list_queues
+
+    ```
+    rabbitmqctl list_queues
+    ```
 
 ### Stop RabbitMQ
 
-4. List the Docker container
-docker ps -aq --filter name=airflow-rmq
+1. List the Docker container
 
-5. Stop RabbitMQ
-docker stop $(!!)
+    ```
+    docker ps -aq --filter name=airflow-rmq
+    ```
 
-## Connect to RabbitMQ using Python
+2. Stop RabbitMQ
+
+    ```
+    docker stop $(!!)
+    ```
+
+## 3. Connect to RabbitMQ using Python
 
 ### Connect to RabbitMQ only using Python (no Celery)
 
@@ -204,35 +221,114 @@ The RabbitMQ web site demonstrates how to connect using Python and the
 [100]: https://www.rabbitmq.com/tutorials/tutorial-one-python.html
 
 1. List queues
-docker exec -ti $RMQ rabbitmqctl list_queues
+
+    ```
+    docker exec -ti $RMQ rabbitmqctl list_queues
+    ```
 
 2. Send a message to a RabbitMQ queue called hello
-python rmq-send.py
+
+    ```
+    python rmq-send.py
+    ```
 
 3. Receive a message from RabbitMQ queue called hello
-python rmq-receive.py
+
+    ```
+    python rmq-receive.py
+    ```
 
 4. List queues displaying the hello queue
-docker exec -ti $RMQ rabbitmqctl list_queues
+
+    ```
+    docker exec -ti $RMQ rabbitmqctl list_queues
+    ```
 
 5. Stop the app
-docker exec -ti $RMQ rabbitmqctl stop_app
+
+    ```
+    docker exec -ti $RMQ rabbitmqctl stop_app
+    ```
 
 6. Start the app
-docker exec -ti $RMQ rabbitmqctl start_app
+
+    ```
+    docker exec -ti $RMQ rabbitmqctl start_app
+    ```
 
 7. List queues and the hello queue is not displayed
-docker exec -ti $RMQ rabbitmqctl list_queues
+
+    ```
+    docker exec -ti $RMQ rabbitmqctl list_queues
+    ```
 
 ### Connect to RabbitMQ using Celery
 
 1. Start the Celery worker
-export PYTHONPATH=/vagrant/scripts
-celery -A tasks worker --loglevel=info
+
+    ```
+    export PYTHONPATH=/vagrant/scripts
+    celery -A tasks worker --loglevel=info
+    ```
 
 2. Call the task
-export PYTHONPATH=/vagrant/scripts
-python -c "from tasks import add; add.delay(2, 3)"
+
+    ```
+    export PYTHONPATH=/vagrant/scripts
+    python -c "from tasks import add; add.delay(2, 3)"
+    ```
+
+## Run Postgres
+
+### Start Postgres
+
+1. Start the RabbitMQ in the Docker container with the name
+
+    ```
+    export RMQ=rabbitmq:3.6.10-management
+    docker run -d --rm --hostname airflow-rmq \
+        --name airflow-rmq -p 192.168.33.10:15672:15672 -p 5672:5672 $RMQ
+    ```
+
+2. Display the list of running Docker instances
+
+    ```
+    docker ps
+    ```
+
+2. Go to the RabbitMQ dashboard at http://192.168.33.10:15672/
+
+3. Login using guest/guest
+
+### Control RabbitMQ
+
+1. Connect to the RabbitMQ Docker container
+
+    ```
+    export RMQ=$(docker ps -aq --filter name=airflow-rmq)
+    docker exec -ti $RMQ bash
+    ```
+
+2. List queues
+
+    ```
+    rabbitmqctl list_queues
+    ```
+
+### Stop RabbitMQ
+
+4. List the Docker container
+
+    ```
+    docker ps -aq --filter name=airflow-rmq
+    ```
+
+5. Stop RabbitMQ
+
+    ```
+    docker stop $(!!)
+
+    ```
 
 ## Connect to Postgres using Psycopg2 and SQLAlchemy
 
