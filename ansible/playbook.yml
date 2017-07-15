@@ -13,9 +13,12 @@
 
   roles:
     - geerlingguy.ntp
+    - angstwad.docker_ubuntu
 
   tasks:
     - include: init_setup.yml
     - include: cli_setup.yml
     - include: python_setup.yml
+    - include: docker_setup.yml
+    - include: docker-image-setup.yml
     - include: airflow-setup.yml

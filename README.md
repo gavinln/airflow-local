@@ -113,36 +113,6 @@ There are [Puppet][60] scripts that automatically install the software when the 
     airflow webserver -p 8080
     ```
 
-## Documentation
-
-1. Main documentation
-
-    * https://pythonhosted.org/airflow/
-
-2. Videos on Airflow
-
-    * https://www.youtube.com/watch?v=dgaoqOZlvEA&feature=youtu.be
-    * https://www.youtube.com/watch?v=dgaoqOZlvEA
-
-2. Slides
-
-    * http://www.slideshare.net/walterliu7/airflow-a-data-flow-engine
-    * http://www.slideshare.net/Hadoop_Summit/airflow-an-open-source-platform-to-author-and-monitor-data-pipelines
-
-4. Airflow reviews
-
-    * http://bytepawn.com/airflow.html
-    * https://www.pandastrike.com/posts/20150914-airflow
-
-5. Airflow tips and tricks
-
-    * https://medium.com/handy-tech/airflow-tips-tricks-and-pitfalls-9ba53fba14eb#.i2hu0syug
-    * https://stlong0521.github.io/20161023%20-%20Airflow.html
-    * https://databricks.com/blog/2016/12/08/integrating-apache-airflow-databricks-building-etl-pipelines-apache-spark.html
-    * http://site.clairvoyantsoft.com/installing-and-configuring-apache-airflow/
-    * https://gtoonstra.github.io/etl-with-airflow/principles.html
-    * https://cwiki.apache.org/confluence/display/AIRFLOW/Common+Pitfalls
-
 ## Disable logging
 
 1. Change to the airflow directory
@@ -175,6 +145,59 @@ There are [Puppet][60] scripts that automatically install the software when the 
     ```
     airflow scheduler
     ```
+
+## Run RabbitMQ
+
+1. Start the RabbitMQ in the Docker container with the name
+
+```
+export RMQ=rabbitmq:3.6.10-management
+docker run -d --hostname airflow-rmq --name airflow-rmq -p 192.168.33.10:15672:15672 $RMQ
+```
+
+2. Go to the RabbitMQ dashboard at http://192.168.33.10:15672/
+
+3. Login using guest/guest
+
+4. List the Docker container
+docker ps -aq --filter name=airflow-rmq
+
+5. Stop RabbitMQ
+docker stop $(!!)
+
+6. Remote the RabbitMQ container
+docker rm $(!!)
+
+## Documentation
+
+1. Main documentation
+
+    * https://pythonhosted.org/airflow/
+
+2. Videos on Airflow
+
+    * https://www.youtube.com/watch?v=dgaoqOZlvEA&feature=youtu.be
+    * https://www.youtube.com/watch?v=dgaoqOZlvEA
+
+2. Slides
+
+    * http://www.slideshare.net/walterliu7/airflow-a-data-flow-engine
+    * http://www.slideshare.net/Hadoop_Summit/airflow-an-open-source-platform-to-author-and-monitor-data-pipelines
+
+4. Airflow reviews
+
+    * http://bytepawn.com/airflow.html
+    * https://www.pandastrike.com/posts/20150914-airflow
+
+5. Airflow tips and tricks
+
+    * https://medium.com/handy-tech/airflow-tips-tricks-and-pitfalls-9ba53fba14eb#.i2hu0syug
+    * [Airflow with Postgres + RabbitMQ](https://stlong0521.github.io/20161023%20-%20Airflow.html)
+    * https://databricks.com/blog/2016/12/08/integrating-apache-airflow-databricks-building-etl-pipelines-apache-spark.html
+    * http://site.clairvoyantsoft.com/installing-and-configuring-apache-airflow/
+    * https://gtoonstra.github.io/etl-with-airflow/principles.html
+    * https://cwiki.apache.org/confluence/display/AIRFLOW/Common+Pitfalls
+
 
 ## Requirements
 

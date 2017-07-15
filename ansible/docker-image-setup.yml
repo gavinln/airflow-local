@@ -1,0 +1,8 @@
+---
+- name: pull rabbitmq
+  docker_image:
+    name: rabbitmq:3.6.10-management
+
+- name: pull postgres
+  docker_image:
+    name: postgres:9.6.3

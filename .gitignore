@@ -5,4 +5,7 @@
 *.o
 *.hi
 .vagrant
+*.log
 ansible/playbook.retry
+ansible/roles
+
