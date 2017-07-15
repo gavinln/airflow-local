@@ -1,0 +1,6 @@
+---
+- name: install pika for RabbitMQ
+  pip: name=pika state=present
+
+- name: install Celery
+  pip: name=celery state=present

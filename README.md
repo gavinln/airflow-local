@@ -196,7 +196,7 @@ docker stop $(!!)
 
 ## Connect to RabbitMQ using Python
 
-### Connect only using Python (no Celery)
+### Connect to RabbitMQ only using Python (no Celery)
 
 The RabbitMQ web site demonstrates how to connect using Python and the
 [Pika][100] library.
@@ -224,10 +224,24 @@ docker exec -ti $RMQ rabbitmqctl start_app
 7. List queues and the hello queue is not displayed
 docker exec -ti $RMQ rabbitmqctl list_queues
 
+### Connect to RabbitMQ using Celery
+
+1. Start the Celery worker
+export PYTHONPATH=/vagrant/scripts
+celery -A tasks worker --loglevel=info
+
+2. Call the task
+export PYTHONPATH=/vagrant/scripts
+python -c "from tasks import add; add.delay(2, 3)"
+
 ## Connect to Postgres using Psycopg2 and SQLAlchemy
+
+### Connect to Postgres only using Psycopg2
 
 1. Test connection using Psycopg2
 http://initd.org/psycopg/docs/usage.html
+
+### Connect to Postgres using Psycopg2 and SQLAlchmey
 
 2. Test connection using SQLAlchemy
 
