@@ -361,8 +361,8 @@ docker exec -ti $PG psql -U postgres -c "drop database test"
 
 2. Videos on Airflow
 
-    * https://www.youtube.com/watch?v=dgaoqOZlvEA&feature=youtu.be
-    * https://www.youtube.com/watch?v=dgaoqOZlvEA
+    * [Best practices with Airflow](https://www.youtube.com/watch?v=dgaoqOZlvEA)
+    * [A Practical Introduction to Airflow](https://www.youtube.com/watch?v=cHATHSB_450)
 
 2. Slides
 
@@ -378,6 +378,8 @@ docker exec -ti $PG psql -U postgres -c "drop database test"
 
     * https://medium.com/handy-tech/airflow-tips-tricks-and-pitfalls-9ba53fba14eb#.i2hu0syug
     * [Airflow with Postgres + RabbitMQ](https://stlong0521.github.io/20161023%20-%20Airflow.html)
+    * [Three tips on using Celery](https://library.launchkit.io/three-quick-tips-from-two-years-with-celery-c05ff9d7f9eb)
+    * [Building a Data Pipeline with Airflow](http://tech.marksblogg.com/airflow-postgres-redis-forex.html)
     * https://databricks.com/blog/2016/12/08/integrating-apache-airflow-databricks-building-etl-pipelines-apache-spark.html
     * http://site.clairvoyantsoft.com/installing-and-configuring-apache-airflow/
     * https://gtoonstra.github.io/etl-with-airflow/principles.html
