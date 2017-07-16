@@ -1,0 +1,6 @@
+---
+- name: install psycopg2
+  pip: name=psycopg2 state=present
+
+- name: install pgcli
+  pip: name=pgcli state=present

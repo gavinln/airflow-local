@@ -278,41 +278,63 @@ The RabbitMQ web site demonstrates how to connect using Python and the
 
     ```
     export PG_IMG=postgres:9.6.3
-    docker run -d --rm --name airflow-pg \
-        -e POSTGRES_PASSWORD=airflow_pg_pass $PG_IMG
-    ```
-
-2. Display the list of running Docker instances
-
-    ```
-    docker ps
+    export PGPASSWORD=airflow_pg_pass
+    docker run -d --rm --name airflow-pg -p 127.0.0.1:5432:5432 \
+        -e POSTGRES_PASSWORD=$PGPASSWORD $PG_IMG
+    export PG=$(docker ps -aq --filter name=airflow-pg)
     ```
 
 ### Stop Postgres
 
-4. List the Docker container
+1. List the Docker container
 
     ```
-    docker ps -aq --filter name=airflow-pg
+    docker ps --filter id=$PG
     ```
 
-5. Stop Postgres
+2. Stop Postgres
 
     ```
-    docker stop $(!!)
-
+    docker stop $PG
     ```
 
 ## 5. Connect to Postgres using Psycopg2 and SQLAlchemy
 
-### Connect to Postgres only using Psycopg2
+Start the Postres database before running these steps
 
-1. Test connection using Psycopg2
-http://initd.org/psycopg/docs/usage.html
+1. Connect to the database using psql and create the database test
 
-### Connect to Postgres using Psycopg2 and SQLAlchmey
+    ```
+    docker exec -ti $PG psql -U postgres -c "drop database test"
+    ```
 
-2. Test connection using SQLAlchemy
+2. Create table test in database test only using Psycopg2
+export PGHOST=localhost
+python /vagrant/scripts/pg-psycopg2.py
+
+3. Connect to database test using Psycopg2 and SQLAlchemy
+python pg-sqlalchemy-read.py
+
+4. Connect to the postgres database again
+docker exec -ti $PG psql -U postgres
+
+5. List the databases
+\l
+
+6. Connect to the test database
+\c test
+
+7. List objects in the test database
+\d
+
+8. Select all rows from the test database
+select id, num, data from test;
+
+9. Quit the psql utility
+\q
+
+10. Drop database test
+docker exec -ti $PG psql -U postgres -c "drop database test"
 
 ## Documentation
 
@@ -352,7 +374,7 @@ Vagrant to set up the Python development environment. The Git environment
 also provides an [SSH  client][200] for Windows.
 
 * [Oracle VM VirtualBox][210]
-* [Vagrant][220]
+* [Vagrant][220] version 1.9 or higher
 * [Git][230]
 
 [200]: http://en.wikipedia.org/wiki/Secure_Shell
