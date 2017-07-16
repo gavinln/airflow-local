@@ -23,18 +23,31 @@ def my_sleeping_function(random_base):
     time.sleep(random_base)
 
 
-def print_context(ds, **kwargs):
+def setup_jobs_fn(ds, **kwargs):
     pprint(kwargs)
     print(ds)
     time.sleep(2)
     return 'Whatever you return gets printed in the logs'
 
 
-run_this = PythonOperator(
-    task_id='print_the_context',
+setup_jobs = PythonOperator(
+    task_id='setup_jobs',
     provide_context=True,
-    python_callable=print_context,
+    python_callable=setup_jobs_fn,
     dag=dag)
+
+
+def collect_results_fn(ds, **kwargs):
+    pprint(kwargs)
+    print(ds)
+
+
+collect_results = PythonOperator(
+    task_id='collect_results',
+    provide_context=True,
+    python_callable=collect_results_fn,
+    dag=dag)
+
 
 for i in range(10):
     '''
@@ -46,5 +59,5 @@ for i in range(10):
         python_callable=my_sleeping_function,
         op_kwargs={'random_base': float(i)/10},
         dag=dag)
-
-task.set_upstream(run_this)
+    task.set_upstream(setup_jobs)
+    task.set_downstream(collect_results)
