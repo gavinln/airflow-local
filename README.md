@@ -113,11 +113,28 @@ This process will setup Airflow in Standalone mode using Sequential Executor
     dags_folder = /vagrant/airflow/dags
     ```
 
+3. Remove example dags
+
+    ```
+    load_examples = False
+    ```
+
 3. Restart the web server
 
     ```
     airflow webserver -p 8080
     ```
+
+### Run a task
+
+1. Run the dynamic_dags task
+airflow list_dags
+
+2. Run the dag
+airflow trigger_dag dynamic_dags
+
+3. Run the scheduler to actually run the dag
+airflow scheduler
 
 ### Disable logging
 
@@ -365,6 +382,7 @@ docker exec -ti $PG psql -U postgres -c "drop database test"
     * http://site.clairvoyantsoft.com/installing-and-configuring-apache-airflow/
     * https://gtoonstra.github.io/etl-with-airflow/principles.html
     * https://cwiki.apache.org/confluence/display/AIRFLOW/Common+Pitfalls
+    * http://michal.karzynski.pl/blog/2017/03/19/developing-workflows-with-apache-airflow/
 
 
 ## Requirements
