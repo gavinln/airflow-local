@@ -13,3 +13,9 @@
 
 - name: install flake8
   pip: name=flake8 state=present
+
+- name: install pip3
+  apt: name=python3-pip state=installed
+
+- name: install aiohttp
+  pip: name=aiohttp state=present executable=pip3
