@@ -1,0 +1,72 @@
+---
+- name: install zlib1g-dev
+  apt: name=zlib1g-dev state=present
+
+- name: install uuid-dev
+  apt: name=uuid-dev state=present
+
+- name: install libmnl-dev
+  apt: name=libmnl-dev state=present
+
+- name: install gcc
+  apt: name=gcc state=present
+
+- name: install make
+  apt: name=make state=present
+
+- name: install autoconf
+  apt: name=autoconf state=present
+
+- name: install autoconf-archive
+  apt: name=autoconf-archive state=present
+
+- name: install autogen
+  apt: name=autogen state=present
+
+- name: install automake
+  apt: name=automake state=present
+
+- name: install pkg-config
+  apt: name=pkg-config state=present
+
+- name: install curl
+  apt: name=curl state=present
+
+  # - name: install python
+  #   apt: name=python state=present
+  #
+  # - name: install python-yaml
+  #   apt: name=python-yaml state=present
+  #
+  # - name: install python-mysqldb
+  #   apt: name=python-mysqldb state=present
+  #
+  # - name: install python-psycopg2
+  #   apt: name=python-psycopg2 state=present
+  #
+  # - name: install nodejs
+  #   apt: name=nodejs state=present
+  #
+  # - name: install lm-sensors
+  #   apt: name=lm-sensors state=present
+  #
+  # - name: install netcat
+  #   apt: name=netcat state=present
+
+- name: install netdata
+  git:
+    repo: https://github.com/firehol/netdata.git
+    dest: ~/netdata
+    depth: 1
+  become_user: ubuntu
+
+# run script with root privileges to build, install, start netdata
+# cd ~/netdata
+# sudo ./netdata-installer.sh --dont-start-it
+# sudo systemctl status netdata
+# sudo systemctl start netdata
+# use start/stop/status with systemctl to control netdata
+# to setup configuration modify the file /etc/netdata/netdata.conf
+# Add the following to update every 10 seconds (default 1 second)
+# [global]
+#           update every = 10

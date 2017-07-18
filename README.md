@@ -326,32 +326,105 @@ Start the Postres database before running these steps
     ```
 
 2. Create table test in database test only using Psycopg2
-export PGHOST=localhost
-python /vagrant/scripts/pg-psycopg2.py
+
+    ```
+    export PGHOST=localhost
+    python /vagrant/scripts/pg-psycopg2.py
+    ```
 
 3. Connect to database test using Psycopg2 and SQLAlchemy
-python pg-sqlalchemy-read.py
+
+    ```
+    python pg-sqlalchemy-read.py
+    ```
 
 4. Connect to the postgres database again
-docker exec -ti $PG psql -U postgres
+
+    ```
+    docker exec -ti $PG psql -U postgres
+    ```
 
 5. List the databases
-\l
+
+    ```
+    \l
+    ```
 
 6. Connect to the test database
-\c test
+
+    ```
+    \c test
+    ```
 
 7. List objects in the test database
-\d
+
+    ```
+    \d
+    ```
 
 8. Select all rows from the test database
-select id, num, data from test;
+
+    ```
+    select id, num, data from test;
+    ```
 
 9. Quit the psql utility
-\q
+
+    ```
+    \q
+    ```
 
 10. Drop database test
-docker exec -ti $PG psql -U postgres -c "drop database test"
+
+    ```
+    docker exec -ti $PG psql -U postgres -c "drop database test"
+    ```
+
+## 6. Setup [netdata][110] for monitoring
+
+[110]: https://github.com/firehol/netdata
+
+1. Change to the netdata directory
+
+    ```
+    cd ~/netdata
+    ```
+
+2. Install netdata without starting it
+
+    ```
+    sudo ./netdata-installer.sh --dont-start-it
+    ```
+
+3. Show status of netdata
+
+    ```
+    sudo systemctl status netdata
+    ```
+
+4. Start netdata
+
+    ```
+    sudo systemctl start netdata
+    ```
+
+5. View the netdata at http://192.168.33.10:19999/
+
+6. Stop netdata
+
+    ```
+    sudo systemctl stop netdata
+    ```
+
+7. Modify /etc/netdata/netdata.conf to change configuration
+
+8. Netdata stores data in memory and updates every second. To store hours of
+   data without using up memory add the following
+
+    ```
+    [global]
+    update every = 10
+    ```
 
 ## Documentation
 
@@ -401,3 +474,4 @@ also provides an [SSH  client][200] for Windows.
 [210]: https://www.virtualbox.org/
 [220]: http://vagrantup.com/
 [230]: http://git-scm.com/
+

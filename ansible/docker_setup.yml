@@ -11,5 +11,5 @@
    become: yes
 
  - name: Install Docker Python library
-   pip: name=docker state=present
+   pip: name=docker-py state=present
    become: yes

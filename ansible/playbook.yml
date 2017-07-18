@@ -24,3 +24,4 @@
     - include: celery-setup.yml
     - include: airflow-setup.yml
     - include: postgres-setup.yml
+    - include: netdata-setup.yml
