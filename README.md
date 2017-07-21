@@ -322,7 +322,7 @@ Start the Postres database before running these steps
 1. Connect to the database using psql and create the database test
 
     ```
-    docker exec -ti $PG psql -U postgres -c "drop database test"
+    docker exec -ti $PG psql -U postgres -c "create database test"
     ```
 
 2. Create table test in database test only using Psycopg2
@@ -380,7 +380,39 @@ Start the Postres database before running these steps
     docker exec -ti $PG psql -U postgres -c "drop database test"
     ```
 
-## 6. Setup [netdata][110] for monitoring
+## 6. Setup Airflow with Postgres
+
+### 1. Using the LocalExecutor
+
+1. Change the executor in ~/airflow.cfg file to the following values
+
+    ```
+    executor = LocalExecutor
+    ```
+
+2. Change the sql_alchemy_conn in ~/airflow.cfg file to the following values
+
+    ```
+    # Change the meta db configuration
+    sql_alchemy_conn = postgresql+psycopg2://postgres:airflow_pg_pass@localhost/test
+    ```
+
+### 2. Using the CeleryExecutor with Redis
+
+1. Change the executor in ~/airflow.cfg file to the following values
+
+    ```
+    executor = CeleryExecutor
+    ```
+
+2. Set the following two values in ~/airflow.cfg file
+
+    ```
+    broker_url = redis://localhost:6379/0
+    celery_result_backend = redis://localhost:6379/0
+    ```
+
+## 7. Setup [netdata][110] for monitoring
 
 [110]: https://github.com/firehol/netdata
 
