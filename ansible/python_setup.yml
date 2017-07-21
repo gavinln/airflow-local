@@ -20,3 +20,6 @@
 - name: install aiohttp
   pip: name=aiohttp state=present executable=pip3
 
+- name: install tmuxp
+  pip: name=tmuxp state=present
+

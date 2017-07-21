@@ -128,13 +128,22 @@ This process will setup Airflow in Standalone mode using Sequential Executor
 ### Run a task
 
 1. Run the dynamic_dags task
-airflow list_dags
+
+    ```
+    airflow list_dags
+    ```
 
 2. Run the dag
-airflow trigger_dag dynamic_dags
+
+    ```
+    airflow trigger_dag dynamic_dags
+    ```
 
 3. Run the scheduler to actually run the dag
-airflow scheduler
+
+    ```
+    airflow scheduler
+    ```
 
 ### Disable logging
 
@@ -412,45 +421,39 @@ Start the Postres database before running these steps
     celery_result_backend = redis://localhost:6379/0
     ```
 
+### 3. Start airflow daemons with Tmux
+
+tmuxp load /vagrant/scripts/tmux-session.yaml
+
 ## 7. Setup [netdata][110] for monitoring
 
 [110]: https://github.com/firehol/netdata
 
-1. Change to the netdata directory
-
+1. Edit netdata configuration
     ```
-    cd ~/netdata
-    ```
-
-2. Install netdata without starting it
-
-    ```
-    sudo ./netdata-installer.sh --dont-start-it
+    vim /opt/netdata/etc/netdata/netdata.conf
     ```
 
-3. Show status of netdata
-
+2. Show status of netdata
     ```
     sudo systemctl status netdata
     ```
 
-4. Start netdata
+3. Start netdata
 
     ```
     sudo systemctl start netdata
     ```
 
-5. View the netdata at http://192.168.33.10:19999/
+4. View the netdata at http://192.168.33.10:19999/
 
-6. Stop netdata
+5. Stop netdata
 
     ```
     sudo systemctl stop netdata
     ```
 
-7. Modify /etc/netdata/netdata.conf to change configuration
-
-8. Netdata stores data in memory and updates every second. To store hours of
+6. Netdata stores data in memory and updates every second. To store hours of
    data without using up memory add the following
 
     ```
