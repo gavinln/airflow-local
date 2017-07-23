@@ -1,4 +1,5 @@
 ---
+# Not used, instead using role leanbit.netdata
 - name: install zlib1g-dev
   apt: name=zlib1g-dev state=present
 
