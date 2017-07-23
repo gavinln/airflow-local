@@ -433,6 +433,8 @@ Start the Postres database before running these steps
 2. Create test database
 3. Run airflow init
 4. Run sudo supervisord
+5. Need to setup logs in airflow-scheduler.conf, airflow-webserver.conf,
+   airflow-worker.conf
 
 ## 7. Setup [netdata][110] for monitoring
 
