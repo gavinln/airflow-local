@@ -423,7 +423,16 @@ Start the Postres database before running these steps
 
 ### 3. Start airflow daemons with Tmux
 
-tmuxp load /vagrant/scripts/tmux-session.yaml
+    ```
+    tmuxp load /vagrant/scripts/tmux-session.yaml
+    ```
+
+### 4. Start airflow daemons with supervisord
+
+1. Create postgres Docker container
+2. Create test database
+3. Run airflow init
+4. Run sudo supervisord
 
 ## 7. Setup [netdata][110] for monitoring
 

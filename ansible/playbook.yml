@@ -15,6 +15,7 @@
     - geerlingguy.ntp
     - angstwad.docker_ubuntu
     - leanbit.netdata
+    - andrewrothstein.supervisord
 
   tasks:
     - include: init_setup.yml
@@ -25,4 +26,4 @@
     - include: celery-setup.yml
     - include: airflow-setup.yml
     - include: postgres-setup.yml
-#    - include: netdata-setup.yml
+    - include: supervisor-conf.yml

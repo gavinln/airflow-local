@@ -1,0 +1,24 @@
+---
+- name: setup airflow worker
+  copy:
+    src: /vagrant/ansible/files/airflow-worker.conf
+    dest: /etc/supervisor/conf.d
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
+
+- name: setup airflow webserver
+  copy:
+    src: /vagrant/ansible/files/airflow-webserver.conf
+    dest: /etc/supervisor/conf.d
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
+
+- name: setup airflow scheduler
+  copy:
+    src: /vagrant/ansible/files/airflow-scheduler.conf
+    dest: /etc/supervisor/conf.d
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
