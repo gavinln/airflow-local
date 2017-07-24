@@ -22,3 +22,11 @@
     owner: ubuntu
     group: ubuntu
     mode: 0644
+
+- name: setup airflow flower
+  copy:
+    src: /vagrant/ansible/files/airflow-flower.conf
+    dest: /etc/supervisor/conf.d
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644

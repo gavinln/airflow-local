@@ -429,6 +429,8 @@ Start the Postres database before running these steps
 
 ### 4. Start airflow daemons with supervisord
 
+1. Start 
+
 1. Create postgres Docker container
 2. Create test database
 3. Run airflow init

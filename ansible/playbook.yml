@@ -16,6 +16,7 @@
     - angstwad.docker_ubuntu
     - leanbit.netdata
     - andrewrothstein.supervisord
+    - jdauphant.nginx
 
   tasks:
     - include: init_setup.yml

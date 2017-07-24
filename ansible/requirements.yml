@@ -6,3 +6,5 @@
  - src: leanbit.netdata
 
  - src: andrewrothstein.supervisord
+
+ - src: jdauphant.nginx

@@ -18,6 +18,9 @@
 - name: Install vim
   apt: name=vim state=installed
 
+- name: Install htop
+  apt: name=htop state=installed
+
 - name: copy autojump profile
   copy:
     src=/usr/share/autojump/autojump.sh
