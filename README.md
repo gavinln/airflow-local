@@ -30,10 +30,22 @@ the VM is started.
     vagrant up
     ```
 
-2. Connect to the VM
+2. Setup private keys
+
+    ```
+    copy-private-keys.bat
+    ```
+
+3. Connect to the VM
 
     ```
     vagrant ssh airflow-master
+    ```
+
+4. Setup private keys
+
+    ```
+    /vagrant/scripts/setup-private-keys.sh
     ```
 
 ### Initialize Airflow
@@ -317,7 +329,7 @@ The RabbitMQ web site demonstrates how to connect using Python and the
     ```
     export PG_IMG=postgres:9.6.3
     export PGPASSWORD=airflow_pg_pass
-    docker run -d --rm --name airflow-pg -p 127.0.0.1:5432:5432 \
+    docker run -d --rm --name airflow-pg -p 0.0.0.0:5432:5432 \
         -e POSTGRES_PASSWORD=$PGPASSWORD $PG_IMG
     export PG=$(docker ps -aq --filter name=airflow-pg)
     ```
@@ -451,7 +463,32 @@ Start the Postres database before running these steps
 
 ### 6. View the Airflow flower server at http://192.168.33.10:5555
 
-## 7. Start airflow daemons with supervisord
+## 7. Setup Airflow worker machine
+
+1. Copy Airflow configuration
+
+    ```
+    rsync -zvh airflow/airflow*.cfg worker:~/airflow/
+    ```
+2. Initialize Airflow home
+export AIRFLOW_HOME=~/airflow
+
+3. Run airflow worker
+airflow worker
+
+4. Stop redis
+sudo systemctl stop redis
+
+5. Modify Redis configuration
+sudo vim /etc/redis/redis.conf
+
+6. Change bind line to the following
+bind 0.0.0.0
+
+7. Start Redis
+sudo systemctl start redis
+
+## 8. Start airflow daemons with supervisord
 
 1. Create postgres Docker container
 2. Create test database
@@ -460,7 +497,7 @@ Start the Postres database before running these steps
 5. Need to setup logs in airflow-scheduler.conf, airflow-webserver.conf,
    airflow-worker.conf
 
-## 8. Setup [netdata][110] for monitoring
+## 9. Setup [netdata][110] for monitoring
 
 [110]: https://github.com/firehol/netdata
 

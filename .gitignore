@@ -6,6 +6,7 @@
 *.hi
 .vagrant
 *.log
+*-private_key
 ansible/playbook.retry
 ansible/roles
 

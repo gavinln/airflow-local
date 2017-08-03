@@ -27,5 +27,5 @@
     - include: celery-setup.yml
     - include: redis-setup.yml
     - include: airflow-setup.yml
-    - include: postgres-setup.yml
+    - include: postgres-client-setup.yml
     - include: supervisor-conf.yml

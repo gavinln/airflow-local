@@ -21,3 +21,4 @@
     - include: python_setup.yml
     - include: celery-setup.yml
     - include: airflow-setup.yml
+    - include: postgres-client-setup.yml
