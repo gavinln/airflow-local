@@ -1,15 +1,9 @@
 ---
-- name: install pika for RabbitMQ
-  pip: name=pika state=present
-
 - name: install Celery
   pip: name=celery state=present
 
+- name: install redis library for Celery
+  pip: name=redis state=present
+
 - name: install flower
   pip: name=flower state=present
-
-- name: install redis server
-  apt: name=redis-server state=installed
-
-- name: install redis
-  pip: name=redis state=present

@@ -1,0 +1,9 @@
+session_name: 2-pane-split
+windows:
+- window_name: dev window
+  layout: even-vertical
+  shell_command_before:
+    - cd ~/airflow              # run as a first command in all panes
+  panes:
+    - airflow webserver -p 8080
+    - airflow scheduler

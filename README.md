@@ -33,32 +33,44 @@ the VM is started.
 2. Connect to the VM
 
     ```
-    vagrant ssh
+    vagrant ssh airflow-master
     ```
 
 ### Initialize Airflow
 
-This process will setup Airflow in Standalone mode using Sequential Executor
-
-1. Setup the home directory
+1. Initialize Airflow home
 
     ```
     export AIRFLOW_HOME=~/airflow
     ```
 
-2. Initialize the sqlite database
+2. Setup the sqlite database
 
     ```
     airflow initdb
     ```
 
-3. Start the web server
+3. Change to the Airflow directory
+
+    ```
+    cd $AIRFLOW_HOME
+    ```
+
+4. Reduce the load on the Airflow system by setting values in airflow.cfg
+
+    ```
+    parallelism = 4
+    dag_concurrency = 2
+    celeryd_concurrency = 4
+    ```
+
+5. Start the web server
 
     ```
     airflow webserver -p 8080
     ```
 
-4. Open a web browser to the UI at http://192.168.33.10:8080
+6. Open a web browser to the UI at http://192.168.33.10:8080
 
 ### Run a task
 
@@ -172,10 +184,10 @@ This process will setup Airflow in Standalone mode using Sequential Executor
     load_examples = False
     ```
 
-3. Start the scheduler by running the following
+3. Start the webserver & scheduler by running the following
 
     ```
-    airflow scheduler
+    tmuxp load /vagrant/scripts/tmux-webserver-scheduler.yaml
     ```
 
 ### Setup Airflow in Pseudo-distributed mode using Local Executor
@@ -421,15 +433,25 @@ Start the Postres database before running these steps
     celery_result_backend = redis://localhost:6379/0
     ```
 
-### 3. Start airflow daemons with Tmux
+### 3. Initialize the database with Airflow data
+
+1. Initialze the test database as the Airflow database
 
     ```
-    tmuxp load /vagrant/scripts/tmux-session.yaml
+    airflow initdb
     ```
 
-### 4. Start airflow daemons with supervisord
+### 4. Start airflow daemons with Tmux
 
-1. Start 
+    ```
+    tmuxp load /vagrant/scripts/tmux-airflow-daemons.yaml
+    ```
+
+### 5. View the Airflow web server at http://192.168.33.10:8080
+
+### 6. View the Airflow flower server at http://192.168.33.10:5555
+
+## 7. Start airflow daemons with supervisord
 
 1. Create postgres Docker container
 2. Create test database
@@ -438,7 +460,7 @@ Start the Postres database before running these steps
 5. Need to setup logs in airflow-scheduler.conf, airflow-webserver.conf,
    airflow-worker.conf
 
-## 7. Setup [netdata][110] for monitoring
+## 8. Setup [netdata][110] for monitoring
 
 [110]: https://github.com/firehol/netdata
 

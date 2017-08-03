@@ -5,7 +5,20 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+Vagrant.require_version ">= 1.9.1"
+
+unless Vagrant.has_plugin?("vagrant-hostmanager")
+  raise 'Plugin vagrant-aws is not installed!'
+end
+
 Vagrant.configure(2) do |config|
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = false
+  config.hostmanager.manage_guest = true
+  config.hostmanager.ignore_private_ip = false
+  config.hostmanager.include_offline = true
+
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
@@ -75,27 +88,10 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get install -y apache2
   # SHELL
 
-  # config.vm.define "airflow-local", autostart: true do |machine|
-  #   machine.vm.provider "virtualbox" do |vb|
-  #     # vb.gui = true
-  #     vb.memory = "4096"
-  #     vb.cpus = "1"
-  #   end
-
-  #   machine.vm.hostname = "airflow-local"
-  #   machine.vm.network "private_network", ip: "192.168.33.10"
-  #   machine.vm.provision "puppet" do |puppet|
-  #     puppet.manifest_file  = "default.pp"
-  #     puppet.manifests_path = "puppet/manifests"
-  #     puppet.options = "--certname=%s" % machine.vm.hostname
-  #     #puppet.options = "--verbose --debug"
-  #   end
-  # end
-
-  config.vm.define "airflow-local", autostart: true do |machine|
+  config.vm.define "airflow-master", autostart: true do |machine|
     machine.vm.provider "virtualbox" do |vb|
       # vb.gui = true
-      vb.memory = "4096"
+      vb.memory = "2048"
       vb.cpus = "1"
 
       if Vagrant::Util::Platform.windows? then
@@ -105,7 +101,7 @@ Vagrant.configure(2) do |config|
       end
     end
 
-    machine.vm.hostname = "airflow-local"
+    machine.vm.hostname = "airflow-master"
     machine.vm.network "private_network", ip: "192.168.33.10"
 
     machine.vm.provision "ansible_local" do |ansible|
@@ -114,6 +110,31 @@ Vagrant.configure(2) do |config|
       ansible.provisioning_path = "/vagrant/ansible"
       ansible.galaxy_role_file = "requirements.yml"
       ansible.playbook = "playbook.yml"
+    end
+  end
+
+  config.vm.define "airflow-worker", autostart: false do |machine|
+    machine.vm.provider "virtualbox" do |vb|
+      # vb.gui = true
+      vb.memory = "1024"
+      vb.cpus = "1"
+
+      if Vagrant::Util::Platform.windows? then
+        # Fix for slow external network connections for Windows 10
+        vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
+        vb.customize ['modifyvm', :id, '--natdnsproxy1', 'on']
+      end
+    end
+
+    machine.vm.hostname = "airflow-worker"
+    machine.vm.network "private_network", ip: "192.168.33.11"
+
+    machine.vm.provision "ansible_local" do |ansible|
+      ansible.install_mode = "pip"
+      ansible.version = "2.2.3.0"
+      ansible.provisioning_path = "/vagrant/ansible"
+      ansible.galaxy_role_file = "requirements.yml"
+      ansible.playbook = "playbook-worker.yml"
     end
   end
 end

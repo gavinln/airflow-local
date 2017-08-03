@@ -1,0 +1,3 @@
+---
+- name: install pika for RabbitMQ
+  pip: name=pika state=present
