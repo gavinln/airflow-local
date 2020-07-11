@@ -9,7 +9,7 @@
 Vagrant.require_version ">= 1.9.1"
 
 unless Vagrant.has_plugin?("vagrant-hostmanager")
-  raise 'Plugin vagrant-aws is not installed!'
+  raise 'Plugin vagrant-hostmanager is not installed!'
 end
 
 Vagrant.configure(2) do |config|
